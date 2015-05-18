@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template, send_from_directory
+from flask import Flask, request, render_template
 from wordcloud import WordCloud
 import tempfile
 
@@ -9,12 +9,13 @@ def display_cloud(raw_text):
     # do some escaping or something, right?
     print(raw_text)
     wc = WordCloud().generate(raw_text)
-    fname = tempfile.NamedTemporaryFile(suffix=".png", delete=False, dir=".")
+    fname = tempfile.NamedTemporaryFile(suffix=".png", delete=False, dir="static")
+    print(fname.name)
     wc.to_file(fname.name)
     #return "I totally did that thing you asked for: %s" % raw_text
-    base_name = fname.name.split("/")[-1]
+    base_name = "static/" + fname.name.split("/")[-1]
     print(base_name)
-    return send_from_directory(".", base_name)
+    return render_template('show_cloud.html', image=base_name)
 
 
 @app.route('/', methods=['GET', 'POST'])
