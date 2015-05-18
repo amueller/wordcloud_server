@@ -10,11 +10,8 @@ def display_cloud(raw_text):
     print(raw_text)
     wc = WordCloud().generate(raw_text)
     fname = tempfile.NamedTemporaryFile(suffix=".png", delete=False, dir="static")
-    print(fname.name)
     wc.to_file(fname.name)
-    #return "I totally did that thing you asked for: %s" % raw_text
     base_name = "static/" + fname.name.split("/")[-1]
-    print(base_name)
     return render_template('show_cloud.html', image=base_name)
 
 
